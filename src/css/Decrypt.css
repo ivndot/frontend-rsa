@@ -1,0 +1,22 @@
+/*****BLOCKS*****/
+.content {
+  width: 100%;
+  height: auto;
+  margin: 30px 0;
+}
+
+.decryptContainer {
+  width: 80%;
+  height: auto;
+  /*flex*/
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/*****ELEMENTS*****/
+.content__text {
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--text);
+}

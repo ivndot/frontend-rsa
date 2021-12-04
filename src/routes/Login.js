@@ -1,6 +1,9 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
+//requests
 import { requestLogin } from "../util/requests";
+//styles
+import "../css/Login.css";
 
 const initialState = {
   user: "",
@@ -86,13 +89,14 @@ export default class Login extends React.Component {
 
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <h3>Login</h3>
-          <p>Introduce el usuario y la contrase&ntilde;a</p>
+        <form onSubmit={this.handleSubmit} className="login">
+          <h3 className="login__title">Login</h3>
+          <p className="login__text">Introduce el usuario y la contrase&ntilde;a</p>
           <input
             type="text"
             name="user"
             placeholder="Usuario"
+            className="login__input"
             onChange={this.handleInput}
             value={this.state.user}
           />
@@ -100,12 +104,16 @@ export default class Login extends React.Component {
             type="password"
             name="password"
             placeholder="Contrase&ntilde;a"
+            className="login__input"
             onChange={this.handleInput}
             value={this.state.password}
           />
-          <button type="submit">Ingresar</button>
+          <p className="errorMssg">{this.state.errorMssg}</p>
+
+          <button type="submit" className="btn__login">
+            Ingresar
+          </button>
         </form>
-        <p style={{ color: "red" }}>{this.state.errorMssg}</p>
       </div>
     );
   }

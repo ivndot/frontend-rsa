@@ -4,17 +4,36 @@ import { Navigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 //requests
 import { requestGenerateKeys } from "../util/requests";
+//styles
+import "../css/GenerateKeys.css";
 
 const GenerateKeys = (props) => (
   <div>
     <Navbar />
-    <h2>Genera un par de llaves</h2>
-    <p>Presiona el bot&oacute;n de abajo para descargar una llave P&uacute;blica y Privada de 4096 bits</p>
-    <button type="button" onClick={async () => await requestGenerateKeys()}>
-      Generar llaves
-    </button>
-    {/* redirect to `/` if its not logged in*/}
-    {props.isLogged === false ? <Navigate replace to="/" /> : null}
+    <div className="container">
+      {/* title */}
+      <h1 className="title">
+        <span className="highlight">Generador de llaves</span>
+      </h1>
+      {/* content */}
+      <div className="content">
+        <p className="content__text">
+          Para cifrar y decifrar se necesita de una llave p&uacute;blica y una llave privada.
+        </p>
+        <br />
+        <p className="content__text">
+          Si no cuenta previamente con estas llaves, presione el bot&oacute;n de abajo para descargar una
+          llave p&uacute;blica y privada de 4096 bits.
+        </p>
+        <div className="content__btn">
+          <button className="btn btn--center" type="button" onClick={async () => await requestGenerateKeys()}>
+            <i className="fas fa-key btn__icon"></i>Generar llaves
+          </button>
+        </div>
+        {/* redirect to `/` if its not logged in*/}
+        {props.isLogged === false ? <Navigate replace to="/" /> : null}
+      </div>
+    </div>
   </div>
 );
 

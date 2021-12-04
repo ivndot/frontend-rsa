@@ -9,12 +9,8 @@ const Navbar = (props) => {
       <nav className="nav">
         {/* Logo and title */}
         <Link to="/inicio" className="nav__logo">
-          <img
-            className="logo__img"
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/React.svg/1200px-React.svg.png"
-            alt="Logo"
-          ></img>
-          <h1 className="logo__title">Cifrado RSA</h1>
+          <i className="fas fa-code logo__img"></i>
+          <h1 className="logo__title">&nbsp;Cifrado RSA</h1>
         </Link>
         {/* Links */}
         <div className="nav__routes">

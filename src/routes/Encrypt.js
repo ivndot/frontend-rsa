@@ -2,8 +2,11 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 //components
 import Navbar from "../components/Navbar";
+import Result from "../components/Result";
 //requests
 import { requestEncrypt, requestDownloadEncrypt } from "../util/requests";
+//styles
+import "../css/Encrypt.css";
 
 const initialState = {
   encryptedText: "",
@@ -140,60 +143,85 @@ export default class Encrypt extends React.Component {
     return (
       <div>
         <Navbar />
-        <h1>Cifrar</h1>
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor="publicKey">Llave p&uacute;blica</label>
-          <textarea
-            id="publicKey"
-            name="publicKey"
-            cols={30}
-            rows={10}
-            placeholder="Escribe o pega la llave p&uacute;blica aqu&iacute;"
-            value={this.state.publicKey}
-            onChange={this.handleInput}
-          ></textarea>
+        <div className="container">
+          {/* title */}
+          <h1 className="title">
+            <span className="highlight">Cifrar</span>
+          </h1>
+          {/* content */}
+          <div className="content">
+            <p className="content__text">
+              Introduce la clave p&uacute;blica de 4096 bits codificada en base64 en la caja de texto,
+              posteriormente introduce el contenido a cifrar, puede ser texto o el contenido de un archivo.
+            </p>
+          </div>
+          {/* form to encrypt */}
+          <form onSubmit={this.handleSubmit}>
+            {/* public key field */}
+            <div className="field">
+              <label htmlFor="publicKey" className="field__label">
+                Llave p&uacute;blica (base64)
+              </label>
+              <textarea
+                id="publicKey"
+                name="publicKey"
+                className="field__textArea"
+                placeholder="Escribe o pega la llave p&uacute;blica aqu&iacute;"
+                value={this.state.publicKey}
+                onChange={this.handleInput}
+              ></textarea>
+            </div>
+            {/* text or file */}
+            <div className="encryptContainer">
+              {/* text field  */}
+              <div className="field field--inline">
+                <label htmlFor="textToEncrypt" className="field__label">
+                  Texto
+                </label>
+                <textarea
+                  id="textToEncrypt"
+                  name="textToEncrypt"
+                  className="field__textArea"
+                  placeholder="Escribe el texto que deseas cifrar aqu&iacute;"
+                  value={this.state.textToEncrypt}
+                  onChange={this.handleInput}
+                  disabled={this.state.fileToEncrypt ? "disabled" : ""}
+                ></textarea>
+              </div>
+              <p>-&oacute;-</p>
+              {/* file field */}
+              <div className="field field--inline">
+                <label htmlFor="fileToEncrypt" className="field__label">
+                  Archivo
+                </label>
+                <input
+                  type="file"
+                  id="fileToEncrypt"
+                  name="fileToEncrypt"
+                  className="field__file"
+                  value={this.state.fileName}
+                  onChange={this.handleInput}
+                  disabled={this.state.textToEncrypt ? "disabled" : ""}
+                />
+              </div>
+            </div>
+            <button type="submit" className="btn btn--block">
+              <i className="fas fa-lock btn__icon"></i>Cifrar
+            </button>
+          </form>
+          <p className="errorMssg">{this.state.errorEncryptMssg}</p>
 
-          <label>Texto</label>
-          <textarea
-            name="textToEncrypt"
-            cols={30}
-            rows={10}
-            placeholder="Escribe el texto que deseas cifrar aqu&iacute;"
-            value={this.state.textToEncrypt}
-            onChange={this.handleInput}
-            disabled={this.state.fileToEncrypt ? "disabled" : ""}
-          ></textarea>
-
-          <label htmlFor="fileToEncrypt">Archivo</label>
-          <input
-            type="file"
-            id="fileToEncrypt"
-            name="fileToEncrypt"
-            value={this.state.fileName}
-            onChange={this.handleInput}
-            disabled={this.state.textToEncrypt ? "disabled" : ""}
-          />
-
-          <button type="submit">Cifrar</button>
-        </form>
-        <p style={{ color: "red" }}>{this.state.errorEncryptMssg}</p>
-
-        <form onSubmit={this.handleSubmitDownload}>
-          <label>Texto cifrado</label>
-          <textarea
-            name="encryptedText"
-            cols={30}
-            rows={10}
-            placeholder="Resultado"
-            readOnly
+          {/*show result */}
+          <Result
+            type="encrypt"
+            handleSubmit={this.handleSubmitDownload}
             value={this.state.encryptedText}
             onChange={this.handleInput}
-          ></textarea>
-          {this.state.encryptedText ? <button type="submit">Descargar texto cifrado</button> : null}
-        </form>
-        <p style={{ color: "red" }}>{this.state.errorDownloadMssg}</p>
-        {/* redirect to `/` if its not logged in*/}
-        {this.props.isLogged === false ? <Navigate replace to="/" /> : null}
+            text={this.state.encryptedText}
+          />
+          {/* redirect to `/` if its not logged in*/}
+          {this.props.isLogged === false ? <Navigate replace to="/" /> : null}
+        </div>
       </div>
     );
   }

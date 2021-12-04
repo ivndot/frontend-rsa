@@ -1,6 +1,121 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&family=Space+Mono&display=swap");
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Space Mono", monospace;
+}
+
+body {
+  background-color: var(--background);
+}
+
+:root {
+  --accent: #04a777;
+  --primary: #0c1618;
+  --background: #e6e6e9;
+  --text: #1f1f1f;
+  --error: #b82a2a;
+}
+
+.container {
+  width: 90%;
+  margin: 50px auto;
+  /* background-color: var(--error); */
+}
+
+.title {
+  font-family: "Poppins", sans-serif;
+  word-spacing: 5px;
+  letter-spacing: 5px;
+  font-size: 50px;
+  font-weight: 100;
+  text-align: center;
+  color: #333333;
+}
+
+.highlight {
+  padding: 0 5px;
+  background-color: var(--primary);
+  color: white;
+}
+
+.btn {
+  display: inline-block;
+  font-size: 20px;
+  min-width: 75px;
+  min-height: 30px;
+  padding: 10px;
+  margin: 20px 0;
+  background-color: var(--accent);
+  box-shadow: 3px 5px 1px var(--primary);
+  border: none;
+  border-radius: 7px;
+  text-decoration: none;
+  color: white;
+}
+
+.btn__icon {
+  margin-right: 15px;
+}
+
+.btn--block {
+  display: block;
+}
+
+.btn:hover {
+  transition: ease 0.2s;
+  cursor: pointer;
+  box-shadow: 0 0 0;
+}
+
+.field {
+  width: 100%;
+  display: block;
+  margin: 0 0 20px 0;
+}
+
+.field__label {
+  display: block;
+  font-size: 20px;
+  color: var(--text);
+  padding: 0 0 10px 0;
+}
+
+.field__textArea {
+  display: block;
+  width: 500px;
+  height: 200px;
+  padding: 10px;
+  resize: vertical;
+  outline: none;
+  border: 1.5px solid var(--text);
+  border-radius: 7px;
+}
+
+.field__file {
+  display: inline-block;
+}
+
+.field--inline {
+  width: auto;
+  display: inline-block;
+}
+
+.field__textArea:focus {
+  border: 1.5px solid var(--accent);
+}
+
+.separator {
+  width: 100%;
+  height: 3px;
+  margin: 40px auto;
+  background-color: var(--primary);
+  border-radius: 7px;
+}
+
+.errorMssg {
+  font-size: 15px;
+  color: var(--error);
 }

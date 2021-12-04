@@ -1,0 +1,26 @@
+.info {
+  display: block;
+  padding: 0 0 20px 0;
+}
+
+.info__header {
+  font-size: 40px;
+  font-family: "Poppins", sans-serif;
+  letter-spacing: 5px;
+  color: var(--text);
+}
+
+.info__content {
+  font-size: 20px;
+  line-height: 1.5;
+  text-align: justify;
+}
+
+.buttonsContainer {
+  width: 100%;
+  /*flex*/
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-items: center;
+}

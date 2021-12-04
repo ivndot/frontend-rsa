@@ -2,8 +2,11 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 //components
 import Navbar from "../components/Navbar";
+import Result from "../components/Result";
 //requests
 import { requestDecrypt, requestDownloadDecrypt } from "../util/requests";
+//styles
+import "../css/Decrypt.css";
 
 const initialState = {
   originalText: "",
@@ -140,60 +143,100 @@ export default class Decrypt extends React.Component {
     return (
       <div>
         <Navbar />
-        <h1>Descifrar</h1>
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor="privateKey">Llave privada</label>
-          <textarea
-            id="privateKey"
-            name="privateKey"
-            cols={30}
-            rows={10}
-            placeholder="Escribe o pega la llave privada aqu&iacute;"
-            value={this.state.privateKey}
-            onChange={this.handleInput}
-          ></textarea>
+        <div className="container">
+          {/* title */}
+          <h1 className="title">
+            <span className="highlight">Descifrar</span>
+          </h1>
+          {/* content */}
+          <div className="content">
+            <p className="content__text">
+              Introduce la clave privada de 4096 bits codificada en base64 en la caja de texto, posteriormente
+              introduce el contenido a descifrar, puede ser texto (codificado en base64) o el contenido de un
+              archivo.
+            </p>
+          </div>
+          {/* form to decrypt */}
+          <form onSubmit={this.handleSubmit}>
+            {/* private key field */}
+            <div className="field">
+              <label htmlFor="privateKey" className="field__label">
+                Llave privada (base64)
+              </label>
+              <textarea
+                id="privateKey"
+                name="privateKey"
+                placeholder="Escribe o pega la llave privada aqu&iacute;"
+                className="field__textArea"
+                value={this.state.privateKey}
+                onChange={this.handleInput}
+              ></textarea>
+            </div>
+            {/* texto or file */}
+            <div className="decryptContainer">
+              {/* text field */}
+              <div className="field field--inline">
+                <label htmlFor="textToDecrypt" className="field__label">
+                  Texto (base64)
+                </label>
+                <textarea
+                  id="textToDecrypt"
+                  name="textToDecrypt"
+                  placeholder="Escribe el texto que deseas descifrar aqu&iacute;"
+                  className="field__textArea"
+                  value={this.state.textToDecrypt}
+                  onChange={this.handleInput}
+                  disabled={this.state.fileToDecrypt ? "disabled" : ""}
+                ></textarea>
+              </div>
+              <p>-&oacute;-</p>
+              {/* file field */}
+              <div className="field field--inline">
+                <label htmlFor="fileToDecrypt" className="field__label">
+                  Archivo
+                </label>
+                <input
+                  type="file"
+                  id="fileToDecrypt"
+                  name="fileToDecrypt"
+                  className="field__file"
+                  value={this.state.fileName}
+                  onChange={this.handleInput}
+                  disabled={this.state.textToDecrypt ? "disabled" : ""}
+                />
+              </div>
+            </div>
+            <button type="submit" className="btn">
+              <i className="fas fa-unlock btn__icon"></i>Descifrar
+            </button>
+          </form>
+          <p className="errorMssg">{this.state.errorDecryptMssg}</p>
 
-          <label>Texto</label>
-          <textarea
-            name="textToDecrypt"
-            cols={30}
-            rows={10}
-            placeholder="Escribe el texto que deseas descifrar aqu&iacute;"
-            value={this.state.textToDecrypt}
-            onChange={this.handleInput}
-            disabled={this.state.fileToDecrypt ? "disabled" : ""}
-          ></textarea>
-
-          <label htmlFor="fileToDecrypt">Archivo</label>
-          <input
-            type="file"
-            id="fileToDecrypt"
-            name="fileToDecrypt"
-            value={this.state.fileName}
-            onChange={this.handleInput}
-            disabled={this.state.textToDecrypt ? "disabled" : ""}
-          />
-
-          <button type="submit">Descifrar</button>
-        </form>
-        <p style={{ color: "red" }}>{this.state.errorDecryptMssg}</p>
-
-        <form onSubmit={this.handleSubmitDownload}>
-          <label>Texto descifrado</label>
-          <textarea
-            name="originalText"
-            cols={30}
-            rows={10}
-            placeholder="Resultado"
-            readOnly
+          {/*show result */}
+          <Result
+            type="decrypt"
+            handleSubmit={this.handleSubmitDownload}
             value={this.state.originalText}
             onChange={this.handleInput}
-          ></textarea>
-          {this.state.originalText ? <button type="submit">Descargar texto descifrado</button> : null}
-        </form>
-        <p style={{ color: "red" }}>{this.state.errorDownloadMssg}</p>
-        {/* redirect to `/` if its not logged in*/}
-        {this.props.isLogged === false ? <Navigate replace to="/" /> : null}
+            text={this.state.originalText}
+          />
+          {/* <form onSubmit={this.handleSubmitDownload}>
+            <label>Texto descifrado</label>
+            <textarea
+              name="originalText"
+              cols={30}
+              rows={10}
+              placeholder="Resultado"
+              readOnly
+              value={this.state.originalText}
+              onChange={this.handleInput}
+            ></textarea>
+            {this.state.originalText ? <button type="submit">Descargar texto descifrado</button> : null}
+          </form>
+          <p style={{ color: "red" }}>{this.state.errorDownloadMssg}</p> */}
+          {/* redirect to `/` if its not logged in*/}
+          {this.props.isLogged === false ? <Navigate replace to="/" /> : null}
+        </div>
       </div>
     );
   }
