@@ -12,7 +12,7 @@ import "./css/App.css";
 
 export default class App extends React.Component {
   state = {
-    isLogged: false,
+    isLogged: true,
   };
 
   /**
