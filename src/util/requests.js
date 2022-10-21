@@ -1,8 +1,6 @@
 import axios from "axios";
 import fileDownload from "js-file-download";
-
-//const api = "http://localhost:8080/api-rsa";
-const api = "https://api-rsa.herokuapp.com/";
+import { API_URL } from "../services/config";
 /*****************************************************
  * Function
  *****************************************************/
@@ -14,7 +12,7 @@ const api = "https://api-rsa.herokuapp.com/";
  */
 
 /**
- * Function that executes a POST request to "api/login", returns the server response
+ * Function that executes a POST request to "API_URL_URL/login", returns the server response
  * @async
  * @param {string} user The username
  * @param {string} password The password
@@ -26,8 +24,8 @@ const requestLogin = async (user, password) => {
   params.append("user", user);
   params.append("password", password);
   //make request
-  const response = await axios.post(`${api}/login`, params, {
-    headers: { "content-type": "application/x-www-form-urlencoded" },
+  const response = await axios.post(`${API_URL}/login`, params, {
+    headers: { "content-type": "application/x-www-form-urlencoded" }
   });
 
   return response.data;
@@ -37,13 +35,13 @@ const requestLogin = async (user, password) => {
  * Function
  *****************************************************/
 /**
- * Function that executes a GET request to "api/generate-keys", returns a zip file with 2 keys
+ * Function that executes a GET request to "API_URL/generate-keys", returns a zip file with 2 keys
  * @async
  */
 const requestGenerateKeys = async () => {
   //generate keys
-  const response = await axios.get(`${api}/generate-keys`, {
-    responseType: "blob",
+  const response = await axios.get(`${API_URL}/generate-keys`, {
+    responseType: "blob"
   });
 
   //download file
@@ -62,7 +60,7 @@ const requestGenerateKeys = async () => {
  */
 
 /**
- * Function that executes a POST request to "api/encrypt", returns the server response
+ * Function that executes a POST request to "API_URL/encrypt", returns the server response
  * @param {string} file File that will be encrypted
  * @param {string} text Text to be encrypted
  * @param {string} publicKey Public key to encrypt content
@@ -76,8 +74,8 @@ const requestEncrypt = async (file, text, publicKey) => {
   //file always on the bottom
   form.append("fileToEncrypt", file);
 
-  const response = await axios.post(`${api}/encrypt`, form, {
-    headers: { "Content-Type": "multipart/form-data" },
+  const response = await axios.post(`${API_URL}/encrypt`, form, {
+    headers: { "Content-Type": "multipart/form-data" }
   });
 
   return response.data;
@@ -95,7 +93,7 @@ const requestEncrypt = async (file, text, publicKey) => {
  */
 
 /**
- * Function that executes a POST request to "api/decrypt", returns the server response
+ * Function that executes a POST request to "API_URL/decrypt", returns the server response
  * @param {string} file File that will be decrypted
  * @param {string} text Text to be decrypted
  * @param {string} privateKey Private key to decrypt the content
@@ -109,8 +107,8 @@ const requestDecrypt = async (file, text, privateKey) => {
   //file always on the bottom
   form.append("fileToDecrypt", file);
 
-  const response = await axios.post(`${api}/decrypt`, form, {
-    headers: { "Content-Type": "multipart/form-data" },
+  const response = await axios.post(`${API_URL}/decrypt`, form, {
+    headers: { "Content-Type": "multipart/form-data" }
   });
 
   return response.data;
@@ -123,13 +121,13 @@ const requestDecrypt = async (file, text, privateKey) => {
  * Function that executes a POST request to download the encrypted text into a file
  * @param {*} content Encrypted text to download into a file
  */
-const requestDownloadEncrypt = async (content) => {
+const requestDownloadEncrypt = async content => {
   //to send www-form-urlencoded
   const params = new URLSearchParams();
   params.append("encryptedText", content);
   //download file with encrypted text
-  const response = await axios.post(`${api}/download-encrypted-text`, params, {
-    headers: { "content-type": "application/x-www-form-urlencoded" },
+  const response = await axios.post(`${API_URL}/download-encrypted-text`, params, {
+    headers: { "content-type": "application/x-www-form-urlencoded" }
   });
 
   //download file
@@ -143,13 +141,13 @@ const requestDownloadEncrypt = async (content) => {
  * Function that executes a POST request to download the decrypted text into a file
  * @param {*} content Decrypted text to download into a file
  */
-const requestDownloadDecrypt = async (content) => {
+const requestDownloadDecrypt = async content => {
   //to send www-form-urlencoded
   const params = new URLSearchParams();
   params.append("originalText", content);
   //download file with decrypted text
-  const response = await axios.post(`${api}/download-decrypted-text`, params, {
-    headers: { "content-type": "application/x-www-form-urlencoded" },
+  const response = await axios.post(`${API_URL}/download-decrypted-text`, params, {
+    headers: { "content-type": "application/x-www-form-urlencoded" }
   });
 
   //download file
@@ -163,5 +161,5 @@ export {
   requestEncrypt,
   requestDecrypt,
   requestDownloadEncrypt,
-  requestDownloadDecrypt,
+  requestDownloadDecrypt
 };

@@ -1,17 +1,18 @@
 import React from "react";
+import Loader from "./Loader";
 
 const attributes = {
   title: "",
   name: "",
   placeHolder: "",
-  labelButton: "",
+  labelButton: ""
 };
 
 /**
  * Function to select attributes of the form
  * @param {string} type The form type [encrypt, decrypt]
  */
-const selectForm = (type) => {
+const selectForm = type => {
   if (type === "encrypt") {
     //form to encrypt
     attributes.title = "Contenido cifrado";
@@ -27,7 +28,7 @@ const selectForm = (type) => {
   }
 };
 
-const Result = (props) => {
+const Result = props => {
   //select form
   selectForm(props.type);
 
@@ -51,8 +52,14 @@ const Result = (props) => {
         </div>
         {props.text ? (
           <button type="submit" className="btn">
-            <i className="fas fa-file-download btn__icon"></i>
-            {attributes.labelButton}
+            {props.loading ? (
+              <Loader label="Descargando" />
+            ) : (
+              <>
+                <i className="fas fa-file-download btn__icon"></i>
+                {attributes.labelButton}
+              </>
+            )}
           </button>
         ) : null}
       </form>

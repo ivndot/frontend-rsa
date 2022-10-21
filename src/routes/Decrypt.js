@@ -3,19 +3,22 @@ import { Navigate } from "react-router-dom";
 //components
 import Navbar from "../components/Navbar";
 import Result from "../components/Result";
+import Loader from "../components/Loader";
 //requests
 import { requestDecrypt, requestDownloadDecrypt } from "../util/requests";
 //styles
 import "../css/Decrypt.css";
 
 const initialState = {
+  loading: false,
+  downloadLoading: false,
   originalText: "",
   privateKey: "",
   textToDecrypt: "",
   fileToDecrypt: "",
   fileName: "",
   errorDecryptMssg: "",
-  errorDownloadMssg: "",
+  errorDownloadMssg: ""
 };
 
 export default class Decrypt extends React.Component {
@@ -25,10 +28,10 @@ export default class Decrypt extends React.Component {
    *Function to handle the input data
    * @param {Event} e
    */
-  handleInput = (e) => {
+  handleInput = e => {
     //set values to the state
     this.setState({
-      [e.target.name]: e.target.type === "file" ? e.target.files[0] : e.target.value,
+      [e.target.name]: e.target.type === "file" ? e.target.files[0] : e.target.value
     });
 
     //set file name
@@ -39,8 +42,9 @@ export default class Decrypt extends React.Component {
    * Function to handle the submited data in the decrypt form
    * @param {Event} e
    */
-  handleSubmit = async (e) => {
+  handleSubmit = async e => {
     e.preventDefault();
+    this.setState({ loading: true });
     // error message
     let errorDecryptMssg = "";
     //get values
@@ -83,6 +87,7 @@ export default class Decrypt extends React.Component {
       cleanState.originalText = originalText;
       this.setState(cleanState);
     }
+    this.setState({ loading: false });
     console.log(cleanState);
   };
 
@@ -110,8 +115,9 @@ export default class Decrypt extends React.Component {
    * Function to handle the download file form
    * @param {Event} e
    */
-  handleSubmitDownload = async (e) => {
+  handleSubmitDownload = async e => {
     e.preventDefault();
+    this.setState({ downloadLoading: true });
     //error message
     let errorDownloadMssg = "";
     //get values
@@ -137,6 +143,7 @@ export default class Decrypt extends React.Component {
       //OK: there was no error
       this.setState(cleanState);
     }
+    this.setState({ downloadLoading: false });
   };
 
   render() {
@@ -207,7 +214,13 @@ export default class Decrypt extends React.Component {
               </div>
             </div>
             <button type="submit" className="btn">
-              <i className="fas fa-unlock btn__icon"></i>Descifrar
+              {this.state.loading ? (
+                <Loader label="Descifrando" />
+              ) : (
+                <>
+                  <i className="fas fa-unlock btn__icon"></i>Descifrar
+                </>
+              )}
             </button>
           </form>
           <p className="errorMssg">{this.state.errorDecryptMssg}</p>
@@ -219,21 +232,8 @@ export default class Decrypt extends React.Component {
             value={this.state.originalText}
             onChange={this.handleInput}
             text={this.state.originalText}
+            loading={this.state.downloadLoading}
           />
-          {/* <form onSubmit={this.handleSubmitDownload}>
-            <label>Texto descifrado</label>
-            <textarea
-              name="originalText"
-              cols={30}
-              rows={10}
-              placeholder="Resultado"
-              readOnly
-              value={this.state.originalText}
-              onChange={this.handleInput}
-            ></textarea>
-            {this.state.originalText ? <button type="submit">Descargar texto descifrado</button> : null}
-          </form>
-          <p style={{ color: "red" }}>{this.state.errorDownloadMssg}</p> */}
           {/* redirect to `/` if its not logged in*/}
           {this.props.isLogged === false ? <Navigate replace to="/" /> : null}
         </div>

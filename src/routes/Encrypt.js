@@ -7,15 +7,18 @@ import Result from "../components/Result";
 import { requestEncrypt, requestDownloadEncrypt } from "../util/requests";
 //styles
 import "../css/Encrypt.css";
+import Loader from "../components/Loader";
 
 const initialState = {
+  loading: false,
+  downloadLoading: false,
   encryptedText: "",
   publicKey: "",
   textToEncrypt: "",
   fileToEncrypt: "",
   fileName: "",
   errorEncryptMssg: "",
-  errorDownloadMssg: "",
+  errorDownloadMssg: ""
 };
 
 export default class Encrypt extends React.Component {
@@ -25,10 +28,10 @@ export default class Encrypt extends React.Component {
    *Function to handle the input data
    * @param {Event} e
    */
-  handleInput = (e) => {
+  handleInput = e => {
     //set values to the state
     this.setState({
-      [e.target.name]: e.target.type === "file" ? e.target.files[0] : e.target.value,
+      [e.target.name]: e.target.type === "file" ? e.target.files[0] : e.target.value
     });
 
     //set file name
@@ -39,8 +42,9 @@ export default class Encrypt extends React.Component {
    * Function to handle the submited data in the encrypt form
    * @param {Event} e
    */
-  handleSubmit = async (e) => {
+  handleSubmit = async e => {
     e.preventDefault();
+    this.setState({ loading: true });
     // error message
     let errorEncryptMssg = "";
     //get values
@@ -83,6 +87,7 @@ export default class Encrypt extends React.Component {
       cleanState.encryptedText = encryptedText;
       this.setState(cleanState);
     }
+    this.setState({ loading: false });
     console.log(cleanState);
   };
 
@@ -110,8 +115,9 @@ export default class Encrypt extends React.Component {
    * Function to handle the download file form
    * @param {Event} e
    */
-  handleSubmitDownload = async (e) => {
+  handleSubmitDownload = async e => {
     e.preventDefault();
+    this.setState({downloadLoading: true});
     //error message
     let errorDownloadMssg = "";
     //get values
@@ -137,6 +143,7 @@ export default class Encrypt extends React.Component {
       //OK: there was no error
       this.setState(cleanState);
     }
+    this.setState({downloadLoading: false});
   };
 
   render() {
@@ -206,7 +213,13 @@ export default class Encrypt extends React.Component {
               </div>
             </div>
             <button type="submit" className="btn btn--block">
-              <i className="fas fa-lock btn__icon"></i>Cifrar
+              {this.state.loading ? (
+                <Loader label="Cifrando"/>
+              ) : (
+                <>
+                  <i className="fas fa-lock btn__icon"></i>Cifrar
+                </>
+              )}
             </button>
           </form>
           <p className="errorMssg">{this.state.errorEncryptMssg}</p>
@@ -218,6 +231,7 @@ export default class Encrypt extends React.Component {
             value={this.state.encryptedText}
             onChange={this.handleInput}
             text={this.state.encryptedText}
+            loading={this.state.downloadLoading}
           />
           {/* redirect to `/` if its not logged in*/}
           {this.props.isLogged === false ? <Navigate replace to="/" /> : null}
